@@ -1,6 +1,8 @@
 import time
 from selenium.webdriver.common.by import By
 from fixture.locators import ProdactPageLocators
+from fixture.locators import BasePageLocators
+from fixture.locators import LoginPageLocators
 import pytest
 
 
@@ -48,3 +50,14 @@ def test_guest_cant_see_success_message(app):
 def test_message_disappeared_after_adding_product_to_basket(app):
     app.helper.add_product_to_basket('http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207')
     assert app.helper.is_disappeared(*ProdactPageLocators.SUCCESS_MESSAGE), 'Сообщение о успешном добавлении товара появляется!'
+
+# Проверка, что гость видит ссылку на страницу логина со страницы Х
+def test_guest_should_see_login_link_on_product_page(app):
+    app.helper.open_page('http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/')
+    assert app.helper.is_element_present(*BasePageLocators.LOGIN_LINK), "Ссылка на страницу логина не отображается!"
+
+# Проверка, что гость может перейти на страницу логина со страницы Х
+def test_guest_can_go_to_login_page_from_product_page(app):
+    app.helper.open_page('http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/')
+    app.helper.go_to_login_page()
+    assert app.helper.is_element_present(*LoginPageLocators.LOGIN_FORM), 'Нет возможности перейти на страницу логина!'

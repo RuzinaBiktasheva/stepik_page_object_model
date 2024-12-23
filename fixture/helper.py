@@ -5,6 +5,7 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import TimeoutException
 from fixture.locators import MainPageLocators
 from fixture.locators import ProdactPageLocators
+from fixture.locators import BasePageLocators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import math
@@ -24,7 +25,7 @@ class Helper:
 
     def go_to_login_page(self):
         wd = self.app.wd
-        wd.find_element(*MainPageLocators.LOGIN_LINK).click()
+        wd.find_element(*BasePageLocators.LOGIN_LINK).click()
 
     def is_element_present(self, how, what):
         wd = self.app.wd
