@@ -51,6 +51,10 @@ class Helper:
         except NoAlertPresentException:
             print("No second alert presented")
 
+    def open_basket(self):
+        wd = self.app.wd
+        wd.find_element(*BasePageLocators.BUTTON_TO_BASKET).click()
+
     def add_product_to_basket(self, link):
         wd = self.app.wd
         self.open_page(link)

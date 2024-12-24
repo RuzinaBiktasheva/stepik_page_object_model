@@ -61,3 +61,12 @@ def test_guest_can_go_to_login_page_from_product_page(app):
     app.helper.open_page('http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/')
     app.helper.go_to_login_page()
     assert app.helper.is_element_present(*LoginPageLocators.LOGIN_FORM), 'Нет возможности перейти на страницу логина!'
+
+# Проверка, что для гостя корзина пуста.
+def test_guest_cant_see_product_in_basket_opened_from_product_page(app):
+    app.helper.open_page('http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/')
+    app.helper.open_basket()
+    # Ожидаем, что в корзине нет товаров.
+    assert app.helper.is_not_element_present(*BasePageLocators.BASKET_IS_NOT_EMPTY), 'В корзине есть товары!'
+    # Ожидаем, что есть текст о том что корзина пуста.
+    assert app.helper.is_element_present(*BasePageLocators.BASKET_IS_EMPTY), 'Корзина не пуста!'
