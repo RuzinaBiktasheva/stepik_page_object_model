@@ -70,3 +70,29 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(app):
     assert app.helper.is_not_element_present(*BasePageLocators.BASKET_IS_NOT_EMPTY), 'В корзине есть товары!'
     # Ожидаем, что есть текст о том что корзина пуста.
     assert app.helper.is_element_present(*BasePageLocators.BASKET_IS_EMPTY), 'Корзина не пуста!'
+
+
+# Группировка тестов.
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope="session", autouse=True)
+    def setup(self, app):
+        app.helper.register_new_user()
+        assert app.helper.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented!"
+
+    # Проверка, что нет сообщения об успехе с помощью is_not_element_present
+    def test_user_cant_see_success_message_after_adding_product_to_basket(self, app):
+        app.helper.open_page('http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207')
+        assert app.helper.is_not_element_present(*ProdactPageLocators.SUCCESS_MESSAGE), 'Сообщение о успешном добавлении товара появляется!'
+
+    # Проверка добавления товара в корзину.
+    def test_user_can_add_product_to_basket(self, app):
+        app.helper.add_product_to_basket(
+            'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019')
+        app.helper.solve_quiz_and_get_code()
+        name_product = app.wd.find_element(By.CSS_SELECTOR, 'h1').text
+        price_product = app.wd.find_element(By.CSS_SELECTOR, 'p[class="price_color"]').text
+        time.sleep(5)
+        message_name = app.wd.find_element(By.XPATH, '//div[@id="messages"]/div/div[1]').text
+        message_price = app.wd.find_element(By.XPATH, '//div[@id="messages"]/div[3]/div[1]/p[1]').text
+        assert f'{name_product} был добавлен в вашу корзину.' == message_name, 'Наименование не соответствует'
+        assert f'Стоимость корзины теперь составляет {price_product}' == message_price, 'Цена не соответствует'

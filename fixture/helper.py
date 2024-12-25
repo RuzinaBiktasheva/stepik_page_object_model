@@ -6,9 +6,12 @@ from selenium.common.exceptions import TimeoutException
 from fixture.locators import MainPageLocators
 from fixture.locators import ProdactPageLocators
 from fixture.locators import BasePageLocators
+from fixture.locators import LoginPageLocators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import math
+import random
+import string
 
 
 class Helper:
@@ -42,7 +45,7 @@ class Helper:
         answer = str(math.log(abs((12 * math.sin(float(x))))))
         alert.send_keys(answer)
         alert.accept()
-        time.sleep(1)
+        time.sleep(2)
         try:
             alert = wd.switch_to.alert
             alert_text = alert.text
@@ -86,3 +89,19 @@ class Helper:
             return False
 
         return True
+
+    # Данные для email и password.
+    random_email = ''.join([random.choice(string.ascii_letters) for i in range(10)]) + '@gmail.com'
+    random_password = ''.join([random.choice(string.ascii_letters) for i in range(10)])
+
+    def register_new_user(self, email=random_email, password=random_password):
+        wd = self.app.wd
+        self.open_home_page()
+        self.go_to_login_page()
+        wd.find_element(*LoginPageLocators.EMAIL).click()
+        wd.find_element(*LoginPageLocators.EMAIL).send_keys(email)
+        wd.find_element(*LoginPageLocators.PASSWORD_1).click()
+        wd.find_element(*LoginPageLocators.PASSWORD_1).send_keys(password)
+        wd.find_element(*LoginPageLocators.PASSWORD_2).click()
+        wd.find_element(*LoginPageLocators.PASSWORD_2).send_keys(password)
+        wd.find_element(*LoginPageLocators.BUTTON_REGISTRATION).click()
