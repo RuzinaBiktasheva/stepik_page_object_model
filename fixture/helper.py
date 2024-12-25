@@ -105,3 +105,7 @@ class Helper:
         wd.find_element(*LoginPageLocators.PASSWORD_2).click()
         wd.find_element(*LoginPageLocators.PASSWORD_2).send_keys(password)
         wd.find_element(*LoginPageLocators.BUTTON_REGISTRATION).click()
+
+    def logout(self):
+        wd = self.app.wd
+        wd.find_element(*LoginPageLocators.BUTTON_LOGOUT).click()

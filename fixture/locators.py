@@ -12,6 +12,7 @@ class LoginPageLocators():
     PASSWORD_1 = (By.CSS_SELECTOR, 'input[id="id_registration-password1"]')
     PASSWORD_2 = (By.CSS_SELECTOR, 'input[id="id_registration-password2"]')
     BUTTON_REGISTRATION = (By.CSS_SELECTOR, 'button[name="registration_submit"]')
+    BUTTON_LOGOUT = (By.CSS_SELECTOR, 'a[id="logout_link"]')
 
 
 class ProdactPageLocators():

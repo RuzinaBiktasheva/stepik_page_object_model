@@ -4,6 +4,8 @@ from fixture.locators import ProdactPageLocators
 from fixture.locators import BasePageLocators
 from fixture.locators import LoginPageLocators
 import pytest
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 # Проверка добавления товара в корзину.
@@ -78,6 +80,8 @@ class TestUserAddToBasketFromProductPage():
     def setup(self, app):
         app.helper.register_new_user()
         assert app.helper.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented!"
+        yield
+        app.helper.logout()
 
     # Проверка, что нет сообщения об успехе с помощью is_not_element_present
     def test_user_cant_see_success_message_after_adding_product_to_basket(self, app):
@@ -91,7 +95,7 @@ class TestUserAddToBasketFromProductPage():
         app.helper.solve_quiz_and_get_code()
         name_product = app.wd.find_element(By.CSS_SELECTOR, 'h1').text
         price_product = app.wd.find_element(By.CSS_SELECTOR, 'p[class="price_color"]').text
-        time.sleep(5)
+        time.sleep(2)
         message_name = app.wd.find_element(By.XPATH, '//div[@id="messages"]/div/div[1]').text
         message_price = app.wd.find_element(By.XPATH, '//div[@id="messages"]/div[3]/div[1]/p[1]').text
         assert f'{name_product} был добавлен в вашу корзину.' == message_name, 'Наименование не соответствует'
